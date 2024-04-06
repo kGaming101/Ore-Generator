@@ -1,6 +1,7 @@
 import math
 import random
 import tkinter as tk
+from tkinter import ttk
 import os
 
 class OreGenerator:
@@ -65,7 +66,7 @@ class OreGenerator:
         self.emerald_ore_names_text = tk.Label(self.pause_menu, text="EMERALD", font=("Comic Sans MS", round(self.size / 65), "bold"), bg="dimgray")
         self.emerald_ore_names_text.place(relx=0.81, rely=0.2)
 
-        self.ore_top_chance = tk.Label(self.pause_menu, text="Ore Chance as % at top:", font=("Comic Sans MS", round(self.size / 80), "bold"), bg="dimgray")
+        self.ore_top_chance = tk.Label(self.pause_menu, text="Ore Chance 1 in __ at the top:", font=("Comic Sans MS", round(self.size / 100), "bold"), bg="dimgray")
         self.ore_top_chance.place(relx=0, rely=0.253)
         
         self.coal_ore_top_chance = tk.Entry(self.pause_menu, font=("Comic Sans MS", round(self.size / 65), "bold"), bg="white", width=round(self.size / 300))
@@ -80,7 +81,7 @@ class OreGenerator:
         self.emerald_ore_top_chance.place(relx=0.85, rely=0.25)
         
 
-        self.ore_bottom_chance = tk.Label(self.pause_menu, text="Ore Chance as % at bottom:", font=("Comic Sans MS", round(self.size / 85), "bold"), bg="dimgray")
+        self.ore_bottom_chance = tk.Label(self.pause_menu, text="Ore Chance 1 in __ at the bottom:", font=("Comic Sans MS", round(self.size / 100), "bold"), bg="dimgray")
         self.ore_bottom_chance.place(relx=0, rely=0.3035)
         
         self.coal_ore_bottom_chance = tk.Entry(self.pause_menu, font=("Comic Sans MS", round(self.size / 65), "bold"), bg="white", width=round(self.size / 300))
@@ -93,6 +94,9 @@ class OreGenerator:
         self.diamond_ore_bottom_chance.place(relx=0.70, rely=0.3)
         self.emerald_ore_bottom_chance = tk.Entry(self.pause_menu, font=("Comic Sans MS", round(self.size / 65), "bold"), bg="white", width=round(self.size / 300))
         self.emerald_ore_bottom_chance.place(relx=0.85, rely=0.3)
+        
+        self.new_patch_button = tk.Button(self.pause_menu, text = "NEW" , font=("Comic Sans MS", round(self.size / 80), "bold"), bg="cyan")
+        self.new_patch_button.place(relx=0, rely=0.35)
         
         generate_button = tk.Button(self.pause_menu, text="GENERATE WORLD", font=("Comic Sans MS", round(self.size / 50), "bold"), bg="green", command=self.generate_world)
         generate_button.place(relx=0.5, rely=1, anchor=tk.S)
@@ -190,6 +194,8 @@ class OreGenerator:
 
         self.clear_blocks()
 
+        print(self.blocks)
+
         # Draw the blocks in the game menu and switch to it
         self.draw_blocks()
         self.game_menu.lift()
@@ -253,38 +259,38 @@ class OreGenerator:
       gd = gt - gb
       ed = et - eb
 
-      cd = cd / ws
-      id = id / ws
-      dd = dd / ws
-      gd = gd / ws
-      ed = ed / ws
+      cd /= ws
+      id /= ws
+      dd /= ws
+      gd /= ws
+      ed /= ws
 
       for y_ in range(ws):
-        print(c,i,d,e,g)
+        print(c,i,g,d,e)
         for x_ in range(ws):
           if y_ != ws-1 and blocks[y_][x_] != 6:
-            coal_chance = random.randint(0, 100)
-            iron_chance = random.randint(0, 100)
-            gold_chance = random.randint(0, 100)
-            diamond_chance = random.randint(0, 100)
-            emerald_chance = random.randint(0, 100)
+            coal_chance = random.randint(0, int(c*100))
+            iron_chance = random.randint(0, int(i*100))
+            gold_chance = random.randint(0, int(g*100))
+            diamond_chance = random.randint(0, int(d*100))
+            emerald_chance = random.randint(0, int(e*100))
 
-            if coal_chance <= c:
+            if 0 < coal_chance <= 100:
               blocks[y_][x_] = 1
-            if iron_chance <= i:
+            if 0 < iron_chance <= 100:
               blocks[y_][x_] = 2
-            if gold_chance <= g:
+            if 0 < gold_chance <= 100:
               blocks[y_][x_] = 5
-            if diamond_chance <= d:
+            if 0 < diamond_chance <= 100:
               blocks[y_][x_] = 3
-            if emerald_chance <= e:
+            if 0 < emerald_chance <= 100:
               blocks[y_][x_] = 4
         
-        c = c - cd
-        i = i - id
-        d = d - dd
-        g = g - gd
-        e = e - ed
+        c -= cd
+        i -= id
+        d -= dd
+        g -= gd
+        e -= ed
         
     def run(self):
         # Start the Tkinter event loop
