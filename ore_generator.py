@@ -37,6 +37,7 @@ class OreGenerator:
         world_size_text.place(relx=0, rely=0.05)
         self.world_size_entry = tk.Entry(self.pause_menu, font=("Comic Sans MS", round(self.size / 65), "bold"), bg="white", width=round(self.size / 300))
         self.world_size_entry.place(relx=0.14, rely=0.05)
+        self.world_size_entry.insert(0,20)
         self.world_size_error = tk.Label(self.pause_menu, text="", font=("Comic Sans MS", round(self.size / 65), "bold"), bg="dimgray", fg="maroon")
         self.world_size_error.place(relx=0.2, rely=0.05)
 
@@ -44,6 +45,7 @@ class OreGenerator:
         bedrock_height_text.place(relx=0, rely=0.1)
         self.bedrock_height_entry = tk.Entry(self.pause_menu, font=("Comic Sans MS", round(self.size / 65), "bold"), bg="white", width=round(self.size / 300))
         self.bedrock_height_entry.place(relx=0.18, rely=0.1)
+        self.bedrock_height_entry.insert(0,4)
         self.bedrock_height_error = tk.Label(self.pause_menu, text="", font=("Comic Sans MS", round(self.size / 65), "bold"), bg="dimgray", fg="maroon")
         self.bedrock_height_error.place(relx=0.24, rely=0.1)
 
@@ -71,14 +73,19 @@ class OreGenerator:
         
         self.coal_ore_top_chance = tk.Entry(self.pause_menu, font=("Comic Sans MS", round(self.size / 65), "bold"), bg="white", width=round(self.size / 300))
         self.coal_ore_top_chance.place(relx=0.25, rely=0.25)
+        self.coal_ore_top_chance.insert(0,10)
         self.iron_ore_top_chance = tk.Entry(self.pause_menu, font=("Comic Sans MS", round(self.size / 65), "bold"), bg="white", width=round(self.size / 300))
         self.iron_ore_top_chance.place(relx=0.4, rely=0.25)
+        self.iron_ore_top_chance.insert(0,50)
         self.gold_ore_top_chance = tk.Entry(self.pause_menu, font=("Comic Sans MS", round(self.size / 65), "bold"), bg="white", width=round(self.size / 300))
         self.gold_ore_top_chance.place(relx=0.55, rely=0.25)
+        self.gold_ore_top_chance.insert(0,100)
         self.diamond_ore_top_chance = tk.Entry(self.pause_menu, font=("Comic Sans MS", round(self.size / 65), "bold"), bg="white", width=round(self.size / 300))
         self.diamond_ore_top_chance.place(relx=0.70, rely=0.25)
+        self.diamond_ore_top_chance.insert(0,150)
         self.emerald_ore_top_chance = tk.Entry(self.pause_menu, font=("Comic Sans MS", round(self.size / 65), "bold"), bg="white", width=round(self.size / 300))
         self.emerald_ore_top_chance.place(relx=0.85, rely=0.25)
+        self.emerald_ore_top_chance.insert(0,200)
         
 
         self.ore_bottom_chance = tk.Label(self.pause_menu, text="Ore Chance 1 in __ at the bottom:", font=("Comic Sans MS", round(self.size / 100), "bold"), bg="dimgray")
@@ -86,17 +93,19 @@ class OreGenerator:
         
         self.coal_ore_bottom_chance = tk.Entry(self.pause_menu, font=("Comic Sans MS", round(self.size / 65), "bold"), bg="white", width=round(self.size / 300))
         self.coal_ore_bottom_chance.place(relx=0.25, rely=0.3)
+        self.coal_ore_bottom_chance.insert(0,100)
         self.iron_ore_bottom_chance = tk.Entry(self.pause_menu, font=("Comic Sans MS", round(self.size / 65), "bold"), bg="white", width=round(self.size / 300))
         self.iron_ore_bottom_chance.place(relx=0.4, rely=0.3)
+        self.iron_ore_bottom_chance.insert(0,15)
         self.gold_ore_bottom_chance = tk.Entry(self.pause_menu, font=("Comic Sans MS", round(self.size / 65), "bold"), bg="white", width=round(self.size / 300))
         self.gold_ore_bottom_chance.place(relx=0.55, rely=0.3)
+        self.gold_ore_bottom_chance.insert(0,25)
         self.diamond_ore_bottom_chance = tk.Entry(self.pause_menu, font=("Comic Sans MS", round(self.size / 65), "bold"), bg="white", width=round(self.size / 300))
         self.diamond_ore_bottom_chance.place(relx=0.70, rely=0.3)
+        self.diamond_ore_bottom_chance.insert(0,75)
         self.emerald_ore_bottom_chance = tk.Entry(self.pause_menu, font=("Comic Sans MS", round(self.size / 65), "bold"), bg="white", width=round(self.size / 300))
         self.emerald_ore_bottom_chance.place(relx=0.85, rely=0.3)
-        
-        self.new_patch_button = tk.Button(self.pause_menu, text = "NEW" , font=("Comic Sans MS", round(self.size / 80), "bold"), bg="cyan")
-        self.new_patch_button.place(relx=0, rely=0.35)
+        self.emerald_ore_bottom_chance.insert(0,100)
         
         generate_button = tk.Button(self.pause_menu, text="GENERATE WORLD", font=("Comic Sans MS", round(self.size / 50), "bold"), bg="green", command=self.generate_world)
         generate_button.place(relx=0.5, rely=1, anchor=tk.S)
@@ -176,8 +185,8 @@ class OreGenerator:
                     random_ore_gen_errors[value] = "Integer"
                     error = True
         
-                if random_ore_gen_values[value] > 100 or random_ore_gen_values[value] < 0:
-                    random_ore_gen_errors[value] = "Range"
+                if random_ore_gen_values[value] < 0:
+                    random_ore_gen_errors[value] = "Less Than 0"
                     error = True
 
         if error:
@@ -193,8 +202,6 @@ class OreGenerator:
         self.initialize_images()
 
         self.clear_blocks()
-
-        print(self.blocks)
 
         # Draw the blocks in the game menu and switch to it
         self.draw_blocks()
@@ -266,7 +273,6 @@ class OreGenerator:
       ed /= ws
 
       for y_ in range(ws):
-        print(c,i,g,d,e)
         for x_ in range(ws):
           if y_ != ws-1 and blocks[y_][x_] != 6:
             coal_chance = random.randint(0, int(c*100))
@@ -303,7 +309,6 @@ class OreGenerator:
 if __name__ == "__main__":
     # Create an instance of OreGenerator and run the application
     ore_generator = OreGenerator()
-    print(ore_generator.size)
     ore_generator.run()
 
 """
